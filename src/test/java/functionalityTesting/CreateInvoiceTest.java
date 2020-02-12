@@ -1,4 +1,4 @@
 package functionalityTesting;
 
-public class EditButtonTest {
+public class CreateInvoiceTest {
 }
