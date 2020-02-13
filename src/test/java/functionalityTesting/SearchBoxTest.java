@@ -1,4 +1,6 @@
 package functionalityTesting;
 
-public class SearchBoxTest {
+
+public class SearchBoxTest{
+
 }
