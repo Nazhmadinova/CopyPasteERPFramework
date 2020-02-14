@@ -1,14 +1,13 @@
 package functionalityTesting;
 
 import org.openqa.selenium.Alert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import pages.ExistingCustomerInvoicePage;
-import pages.HomePage;
-import pages.InvoicingModulePage;
-import pages.LoginPage;
+import pages.*;
 import utilities.Config;
 import utilities.Driver;
 import utilities.SeleniumUtils;
@@ -20,6 +19,9 @@ public class ValidateInvoiceTest {
 
     InvoicingModulePage invoicingModulePage = new InvoicingModulePage();
     ExistingCustomerInvoicePage existingCustomerInvoicePage = new ExistingCustomerInvoicePage();
+    RegisterPaymentPage registerPaymentPage = new RegisterPaymentPage();
+    SendByEmailPage sendByEmailPage = new SendByEmailPage();
+    HomePage homePage = new HomePage();
 
 
     @BeforeMethod
@@ -28,6 +30,7 @@ public class ValidateInvoiceTest {
         SeleniumUtils.login(Config.getProperties("url2"),
                 Config.getProperties("UsernameManager3"),
                 Config.getProperties("passwordManager3"));
+
         SeleniumUtils.goToInvoicingModule();
 
     }
@@ -79,18 +82,49 @@ public class ValidateInvoiceTest {
     }
 
 
-    @Test(priority = 4,  dependsOnMethods = "")
+    @Test(priority = 4)
     public void validateWithPositiveAmountOfTotalAndRegisterPayment(){
 
+        List<WebElement> totalAmount = invoicingModulePage.tableTotal;
+        List<WebElement> statuses = invoicingModulePage.tableStatus;
+
+        SeleniumUtils.pauseWithTreadSleep(10);
+        for(int i = 0; i < totalAmount.size(); i++){
+            String str = totalAmount.get(i).getText();
+            String newStr = "";
+            for(int j = 0; j < str.length(); j++){
+                if(str.charAt(j) == '-' || Character.isDigit(str.charAt(j)) || str.charAt(j) == '.'){
+                    newStr += str.charAt(j);
+                }
+            }
+            double eachAmount = Double.parseDouble(newStr);
+            if(statuses.get(i).getText().equals(Config.getProperties("invoiceStatusDraft")) && eachAmount > 0){
+                totalAmount.get(i).click();
+                break;
+            }
+        }
+
+        //SeleniumUtils.explicitWaitForVisibility(existingCustomerInvoicePage.validateButton,5);
+        SeleniumUtils.pauseWithTreadSleep(5);
+        existingCustomerInvoicePage.validateButton.click();
+        SeleniumUtils.pauseWithTreadSleep(5);
+        existingCustomerInvoicePage.registerPaymentButton.click();
+
+        SeleniumUtils.pauseWithTreadSleep(2);
+        registerPaymentPage.validateButton.click();
+
+        SeleniumUtils.pauseWithTreadSleep(3);
+
+        String status = existingCustomerInvoicePage.invoiceStatus.getAttribute("class");
+
+        Assert.assertTrue(status.contains(Config.getProperties("invoiceStatusAttribute")));
     }
 
     @Test(priority = 5)
     public void validateInvoiceWithNegativeAmountOfTotal(){
 
-        SeleniumUtils.pauseWithTreadSleep(5);
-
         List<WebElement> totalAmount = invoicingModulePage.tableTotal;
-
+        SeleniumUtils.pauseWithTreadSleep(5);
 
         for(WebElement amount: totalAmount){
             String str = amount.getText();
@@ -117,15 +151,83 @@ public class ValidateInvoiceTest {
 
         SeleniumUtils.pauseWithTreadSleep(5);
 
-        existingCustomerInvoicePage.negativeAmountValidateWarningOkButton.click();
+        existingCustomerInvoicePage.wrongValidateWarningOkButton.click();
 
     }
 
     @Test(priority = 6)
-    public void sendByEmailInvoice(){
+    public void validateInvoiceWithEmptyProductField(){
+
+        List<WebElement> totalAmount = invoicingModulePage.tableTotal;
+        List<WebElement> statuses = invoicingModulePage.tableStatus;
+        SeleniumUtils.pauseWithTreadSleep(4);
+
+        boolean check = true;
+
+        int a = 0;
+        while (check){
+            for(int i = a; i < totalAmount.size()-1; i++){
+                String str = totalAmount.get(i).getText();
+                String newStr = "";
+                for(int j = 0; j < str.length(); j++){
+                    if(str.charAt(j) == '-' || Character.isDigit(str.charAt(j)) || str.charAt(j) == '.'){
+                        newStr += str.charAt(j);
+                    }
+                }
+                double eachAmount = Double.parseDouble(newStr);
+                if(statuses.get(i).getText().equals(Config.getProperties("invoiceStatusDraft")) && eachAmount == 0){
+                    totalAmount.get(i).click();
+                    a = i+1;
+                    break;
+                }
+            }
+            SeleniumUtils.pauseWithTreadSleep(2);
+
+            try {
+                existingCustomerInvoicePage.productFieldFirst.getText();
+                homePage.invoicingButton.click();
+            }catch (NoSuchElementException e){
+                existingCustomerInvoicePage.validateButton.click();
+                SeleniumUtils.pauseWithTreadSleep(3);
+                String warningMsg = existingCustomerInvoicePage.emptyProductFieldValidateWarning.getText();
+                Assert.assertEquals(warningMsg,Config.getProperties("emptyProductFieldValidateWarningMsg"));
+                existingCustomerInvoicePage.wrongValidateWarningOkButton.click();
+                break;
+            }
+        }
 
     }
 
+    @Test(priority = 7)
+    public void sendByEmailInvoice(){
 
+        List<WebElement> totalAmount = invoicingModulePage.tableTotal;
+        List<WebElement> statuses = invoicingModulePage.tableStatus;
+        SeleniumUtils.pauseWithTreadSleep(4);
+        for(int i = 0; i < totalAmount.size(); i++){
+            String str = totalAmount.get(i).getText();
+            String newStr = "";
+            for(int j = 0; j < str.length(); j++){
+                if(str.charAt(j) == '-' || Character.isDigit(str.charAt(j)) || str.charAt(j) == '.'){
+                    newStr += str.charAt(j);
+                }
+            }
+            double eachAmount = Double.parseDouble(newStr);
+            if(statuses.get(i).getText().equals(Config.getProperties("invoiceStatusDraft")) && eachAmount > 0){
+                totalAmount.get(i).click();
+                break;
+            }
+        }
+
+        existingCustomerInvoicePage.validateButton.click();
+        SeleniumUtils.explicitWaitForVisibility(existingCustomerInvoicePage.sendByEmailButton,5);
+        existingCustomerInvoicePage.sendByEmailButton.click();
+        SeleniumUtils.explicitWaitForVisibility(sendByEmailPage.sendButton,5);
+        sendByEmailPage.sendButton.click();
+
+        String sendByEmailAttribute = existingCustomerInvoicePage.sendByEmailButtonAfterClicking.getAttribute("class");
+        Assert.assertFalse(sendByEmailAttribute.contains(Config.getProperties("sendByEmailAttributeAfterClicking")));
+
+    }
 
 }
