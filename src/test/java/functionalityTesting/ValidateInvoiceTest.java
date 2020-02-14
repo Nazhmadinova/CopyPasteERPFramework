@@ -11,24 +11,25 @@ import pages.InvoicingModulePage;
 import pages.LoginPage;
 import utilities.Config;
 import utilities.Driver;
+import utilities.SeleniumUtils;
 
 import java.util.List;
 
 public class ValidateInvoiceTest {
 
-    LoginPage loginPage = new LoginPage();
-    HomePage homePage = new HomePage();
+
     InvoicingModulePage invoicingModulePage = new InvoicingModulePage();
     ExistingCustomerInvoicePage existingCustomerInvoicePage = new ExistingCustomerInvoicePage();
 
 
     @BeforeMethod
     public void login(){
-        Driver.getDriver().get(Config.getProperties("url2"));
-        loginPage.usernameInput.sendKeys(Config.getProperties("UsernameManager3"));
-        loginPage.passwordInput.sendKeys(Config.getProperties("passwordManager3"));
-        loginPage.loginButton.click();
-        homePage.invoicingButton.click();
+
+        SeleniumUtils.login(Config.getProperties("url2"),
+                Config.getProperties("UsernameManager3"),
+                Config.getProperties("passwordManager3"));
+        SeleniumUtils.goToInvoicingModule();
+
     }
 
     @Test(priority = 1)
@@ -84,8 +85,10 @@ public class ValidateInvoiceTest {
     }
 
     @Test(priority = 5)
-    public void validateInvoiceWithNegativeAmountOfTotal() throws InterruptedException{
-        Thread.sleep(5000);
+    public void validateInvoiceWithNegativeAmountOfTotal(){
+
+        SeleniumUtils.pauseWithTreadSleep(5);
+
         List<WebElement> totalAmount = invoicingModulePage.tableTotal;
 
 
@@ -103,15 +106,18 @@ public class ValidateInvoiceTest {
                 break;
             }
         }
-        Thread.sleep(5000);
+
+        SeleniumUtils.pauseWithTreadSleep(5);
 
         existingCustomerInvoicePage.validateButton.click();
 
         String warning = existingCustomerInvoicePage.negativeAmountValidateWarning.getText();
 
         Assert.assertTrue(warning.contains(Config.getProperties("negativeAmountValidateWarningMsg")));
-        Thread.sleep(5000);
-       existingCustomerInvoicePage.negativeAmountValidateWarningOkButton.click();
+
+        SeleniumUtils.pauseWithTreadSleep(5);
+
+        existingCustomerInvoicePage.negativeAmountValidateWarningOkButton.click();
 
     }
 
