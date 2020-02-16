@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pages.*;
@@ -228,6 +229,11 @@ public class ValidateInvoiceTest {
         String sendByEmailAttribute = existingCustomerInvoicePage.sendByEmailButtonAfterClicking.getAttribute("class");
         Assert.assertFalse(sendByEmailAttribute.contains(Config.getProperties("sendByEmailAttributeAfterClicking")));
 
+    }
+
+    @AfterClass
+    public void quitBrowser(){
+       Driver.quitDriver();
     }
 
 }
