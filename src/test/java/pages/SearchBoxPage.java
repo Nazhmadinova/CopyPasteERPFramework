@@ -6,10 +6,12 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import utilities.Driver;
 
+import java.util.List;
+
 public class SearchBoxPage {
-public SearchBoxPage(){
- PageFactory.initElements(Driver.getDriver(), this);
-}
+    public SearchBoxPage() {
+        PageFactory.initElements(Driver.getDriver(), this);
+    }
     @FindBy(id = "login")
     public WebElement usernameInput;
     @FindBy(id = "password")
@@ -24,25 +26,20 @@ public SearchBoxPage(){
     public WebElement searchBox;
     @FindBy(xpath = "//span[@title='Advanced Search...']")
     public WebElement searchSignBox;
-    @FindBy(xpath = "//span[@class='fa fa-filter']")
+    @FindBy(xpath = "(//div[@class='o_cp_right']//div/button)[1]")
     public WebElement FiltersModule;
-    @FindBy(xpath = "//a[.='Paid']")
+    @FindBy(xpath = "//a[contains(text(),'Paid')]")
     public WebElement FiltersOptionPaid;
     @FindBy(xpath = "//span[@class='fa fa-bars']")
     public WebElement GroupByModule;
     @FindBy(xpath = "//span[@class='fa fa-star']")
     public WebElement FavoritesModule;
-
-
-
-
-
-
-
-
-
-
-
-
-
+    @FindBy(xpath = "//div[@class='o_facet_values']")
+    public WebElement SearchBoxPresetOption;
+    @FindBy(xpath = "//ul[@class='dropdown-menu o_filters_menu']/li")
+    public List<WebElement> listPresetOptions ;
+    @FindBy(xpath = "//tbody[@class='ui-sortable']/tr/td[2]")
+    public List<WebElement> listNames;
+    @FindBy(xpath = "//div[@class='o_cp_searchview']//div[@class= 'o_searchview_facet']")
+    public List<WebElement> SearchBoxConfirmTag;
 }
