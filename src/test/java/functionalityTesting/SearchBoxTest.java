@@ -6,10 +6,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import pages.SearchBoxPage;
 import utilities.Config;
 import utilities.Driver;
@@ -20,27 +17,29 @@ import java.util.List;
 public class SearchBoxTest {
 
     SearchBoxPage searchBoxPage = new SearchBoxPage();
-
-    @BeforeTest
-    public void setUp() {
-        Driver.getDriver().get(Config.getProperties("url2"));
-        searchBoxPage.usernameInput.sendKeys(Config.getProperties("UsernameManager3"));
-        searchBoxPage.passwordInput.sendKeys(Config.getProperties("passwordManager3"));
-        searchBoxPage.loginButton.click();
-        searchBoxPage.InvoicingModule.click();
+    @BeforeMethod
+    public void login(){
+        SeleniumUtils.login(Config.getProperties("url2"),
+                Config.getProperties("UsernameManager3"),
+                Config.getProperties("passwordManager3"));
+        SeleniumUtils.goToInvoicingModule();
     }
-    @Test
+    @Test(priority = 1)
     public void searchBoxLocation() {
+        SeleniumUtils.pauseWithTreadSleep(2);
         Assert.assertTrue(searchBoxPage.searchBox.isDisplayed());
+        SeleniumUtils.pauseWithTreadSleep(4);
         Assert.assertTrue(searchBoxPage.searchSignBox.isDisplayed());
         searchBoxPage.searchSignBox.click();
+        SeleniumUtils.pauseWithTreadSleep(4);
         Assert.assertTrue(searchBoxPage.FiltersModule.isDisplayed());
         Assert.assertTrue(searchBoxPage.GroupByModule.isDisplayed());
         Assert.assertTrue(searchBoxPage.FavoritesModule.isDisplayed());
     }
-    @Test
+    @Test(priority = 2)
     public void verifyingSearchInvoiceValidName() {
-        searchBoxPage.searchBox.sendKeys(Config.getProperties("validCustomerName")+ Keys.ENTER);
+        SeleniumUtils.pauseWithTreadSleep(6);
+        searchBoxPage.searchBox.sendKeys(Config.getProperties("validCustomerName")+Keys.ENTER);
         SeleniumUtils.pauseWithTreadSleep(3);
         List<WebElement> list = searchBoxPage.listNames;
         for (WebElement name : list) {
@@ -50,16 +49,15 @@ public class SearchBoxTest {
             }
         }
     }
-    @Test
+    @Test(priority = 3)
     public void verifyPresetOptionsDisplayed() {
-        //  searchBoxPage.searchSignBox.click();
-        SeleniumUtils.pauseWithTreadSleep(2);
+        SeleniumUtils.pauseWithTreadSleep(8);
         searchBoxPage.FiltersModule.click();
         List<WebElement> list = searchBoxPage.listPresetOptions;
         for (WebElement element : list) {
             if (element.getText().equalsIgnoreCase(Config.getProperties("presetOption3"))) {
                 element.click();
-                SeleniumUtils.pauseWithTreadSleep(2);
+                SeleniumUtils.pauseWithTreadSleep(3);
                 Assert.assertTrue(element.isDisplayed());
                 break;
             }
@@ -72,7 +70,7 @@ public class SearchBoxTest {
             }
         }
     }
-    // @AfterClass
+    @AfterClass
     public void close(){
         Driver.quitDriver();
     }
