@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="CopyPasteERPFramework" />
         <module name="CopyPasteFrame" />
+        <module name="CopyPasteERPFramework" />
       </profile>
     </annotationProcessing>
   </component>
