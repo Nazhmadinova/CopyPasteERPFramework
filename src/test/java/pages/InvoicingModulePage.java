@@ -13,11 +13,11 @@ public class InvoicingModulePage {
         PageFactory.initElements(Driver.getDriver(),this);
     }
 
-  //  @FindBy(xpath = "//tbody[@class='ui-sortable']/tr/td[8]")
-   // public List<WebElement> tableTotal;
+    @FindBy(xpath = "//tbody[@class='ui-sortable']/tr/td[8]")
+    public List<WebElement> tableTotal;
 
-   // @FindBy(xpath = "//tbody[@class='ui-sortable']/tr/td[10]")
-   // public List<WebElement> tableStatus;
+    @FindBy(xpath = "//tbody[@class='ui-sortable']/tr/td[10]")
+    public List<WebElement> tableStatus;
 
     @FindBy(xpath = "//button[@class='btn btn-primary btn-sm o_list_button_add']")
     public WebElement CreateInvoicesTabButton;

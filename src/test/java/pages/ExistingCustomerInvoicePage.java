@@ -18,8 +18,27 @@ public class ExistingCustomerInvoicePage {
     public WebElement negativeAmountValidateWarning;
 
     @FindBy(xpath = "//span[.='Ok']")
-    public WebElement negativeAmountValidateWarningOkButton;
-    
+    public WebElement wrongValidateWarningOkButton;
 
+    @FindBy(xpath = "//button[.='Register Payment']")
+    public WebElement registerPaymentButton;
+
+    @FindBy(xpath = "//button[.='Print Invoice']")
+    public WebElement printInvoiceButton;
+
+    @FindBy(xpath = "//button[.='Send by Email'][1]")
+    public WebElement sendByEmailButton;
+
+    @FindBy(xpath = "//button[.='Send by Email'][2]")
+    public WebElement sendByEmailButtonAfterClicking;
+
+    @FindBy(xpath = "//button[@data-value='paid']")
+    public WebElement invoiceStatus;
+    
+    @FindBy(xpath = "(//td[@class='o_data_cell'])[1]")
+    public WebElement productFieldFirst;
+
+    @FindBy(xpath = "//div[@class='o_dialog_warning modal-body']")
+    public WebElement emptyProductFieldValidateWarning;
 
 }
