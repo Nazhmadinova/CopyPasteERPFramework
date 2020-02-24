@@ -1,6 +1,5 @@
 package functionalityTesting;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -11,8 +10,6 @@ import utilities.Config;
 import utilities.Driver;
 
 public class InvoicingModuleTest {
-
-
     LoginPage loginPage = new LoginPage();
     HomePage homePage = new HomePage();
     InvoicingModulePage invoicingModulePage = new InvoicingModulePage();
@@ -33,7 +30,7 @@ public class InvoicingModuleTest {
     @Test(groups = {"Smoke"}, priority = 1)
     public void invoiceButtonIsDisplayed(){
 
-       Assert.assertTrue(invoicingModulePage.CreateInvoicesTabButton.isDisplayed(),"Customer Invoices Tab Button is not Displayed");
+        Assert.assertTrue(invoicingModulePage.CreateInvoicesTabButton.isDisplayed(),"Customer Invoices Tab Button is not Displayed");
 
     }
 
@@ -55,10 +52,4 @@ public class InvoicingModuleTest {
         Assert.assertTrue(invoicingModulePage.FirstPayments.isDisplayed(),"Customer First Payment Tab is not Displayed");
         Assert.assertTrue(invoicingModulePage.LoginAvatarImage.isDisplayed(),"Customer Login Avatar Image is not Displayed");
     }
-
-
-
-
-
-
 }
