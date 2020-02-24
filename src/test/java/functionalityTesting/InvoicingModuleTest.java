@@ -30,35 +30,6 @@ public class InvoicingModuleTest {
     }
 
 
-@Test
-
-    public void CustomerInvoicesPages(){
-
-
-       Assert.assertTrue(invoicingModulePage.CreateInvoicesTabButton.isDisplayed(),"Customer Invoices Tab Button is not Displayed");
-       Assert.assertTrue(invoicingModulePage.CreateInvoicesListButton.isDisplayed(),"Customer Invoices List Button is not Displayed");
-       Assert.assertTrue(invoicingModulePage.CreateInvoicesCalendarButton.isDisplayed(),"Customer Invoices Calendar Button is not Displayed");
-       Assert.assertTrue(invoicingModulePage.CreateInvoicesGraphButton.isDisplayed(),"Customer Invoices Graph Button is not Displayed");
-       Assert.assertTrue(invoicingModulePage.CreateInvoicesKanbanButton.isDisplayed(),"Customer Invoices Kanban Button is not Displayed");
-       Assert.assertTrue(invoicingModulePage.CreateInvoicesPivotButton.isDisplayed(),"Customer Invoices Pivot Button is not Displayed");
-       Assert.assertTrue(invoicingModulePage.CreateInvoicesSearchButton.isDisplayed(),"Customer Invoices Search Button is not Displayed");
-       Assert.assertTrue(invoicingModulePage.CreateInvoicesTabButton.isDisplayed(),"Customer Invoices Tab Button is not Displayed");
-       Assert.assertTrue(invoicingModulePage.CreateInvoicesPreviousArrow.isDisplayed(),"Customer Invoices Previous Arrow is not Displayed");
-       Assert.assertTrue(invoicingModulePage.CreateInvoicesNextArrow.isDisplayed(),"Customer Invoices Next Arrow is not Displayed");
-       Assert.assertTrue(invoicingModulePage.CreateInvoicesTab.isDisplayed(),"Customer Invoices Create Invoice is not Displayed");
-       Assert.assertTrue(invoicingModulePage.CustomerCreditNotes.isDisplayed(),"Customer Credit Notes is not Displayed");
-       Assert.assertTrue(invoicingModulePage.FirstPayments.isDisplayed(),"Customer First Payment Tab is not Displayed");
-       Assert.assertTrue(invoicingModulePage.LoginAvatarImage.isDisplayed(),"Customer Login Avatar Image is not Displayed");
-
-
-
-
-
-
-
-}
-
-
 
 
 
