@@ -13,4 +13,7 @@ public class SendByEmailPage {
 
     @FindBy(xpath = "//button[.='Send']")
     public WebElement sendButton;
+
+    @FindBy(xpath = "//button[@class='close']")
+    public WebElement closeButton;
 }

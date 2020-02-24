@@ -24,7 +24,8 @@ public class SearchBoxTest {
                 Config.getProperties("passwordManager3"));
         SeleniumUtils.goToInvoicingModule();
     }
-    @Test(priority = 1)
+
+    @Test(groups = {"Smoke"},priority = 2)
     public void searchBoxLocation() {
         SeleniumUtils.pauseWithTreadSleep(2);
         Assert.assertTrue(searchBoxPage.searchBox.isDisplayed());
@@ -36,7 +37,7 @@ public class SearchBoxTest {
         Assert.assertTrue(searchBoxPage.GroupByModule.isDisplayed());
         Assert.assertTrue(searchBoxPage.FavoritesModule.isDisplayed());
     }
-    @Test(priority = 2)
+    @Test(groups = {"Smoke"},priority = 3)
     public void verifyingSearchInvoiceValidName() {
         SeleniumUtils.pauseWithTreadSleep(6);
         searchBoxPage.searchBox.sendKeys(Config.getProperties("validCustomerName")+Keys.ENTER);
@@ -49,7 +50,7 @@ public class SearchBoxTest {
             }
         }
     }
-    @Test(priority = 3)
+    @Test(groups = {"Smoke"},priority = 4)
     public void verifyPresetOptionsDisplayed() {
         SeleniumUtils.pauseWithTreadSleep(8);
         searchBoxPage.FiltersModule.click();
@@ -69,6 +70,7 @@ public class SearchBoxTest {
                 break;
             }
         }
+        SeleniumUtils.goToInvoicingModule();
     }
     @AfterClass
     public void close(){
