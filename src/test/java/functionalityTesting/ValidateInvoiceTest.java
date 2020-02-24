@@ -1,13 +1,10 @@
+
 package functionalityTesting;
 
-import org.openqa.selenium.Alert;
-import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import pages.*;
 import utilities.Config;
 import utilities.Driver;
@@ -25,7 +22,7 @@ public class ValidateInvoiceTest {
     HomePage homePage = new HomePage();
 
 
-    @BeforeMethod
+    @BeforeSuite(alwaysRun = true)
     public void login(){
 
         SeleniumUtils.login(Config.getProperties("url2"),
@@ -36,7 +33,12 @@ public class ValidateInvoiceTest {
 
     }
 
-    @Test(priority = 1)
+    @AfterMethod(alwaysRun = true)
+    public void goToInvoicing(){
+        SeleniumUtils.goToInvoicingModule();
+    }
+
+    @Test(groups = {"Smoke"}, priority = 5)
     public void validateButtonIsDisplayed(){
 
         List<WebElement> statuses = invoicingModulePage.tableStatus;
@@ -51,7 +53,7 @@ public class ValidateInvoiceTest {
         Assert.assertTrue(existingCustomerInvoicePage.validateButton.isDisplayed(),"Validate button is not displayed, test FAILED");
     }
 
-    @Test(priority = 2)
+    @Test(groups = {"Smoke"},priority = 6)
     public void validateButtonShouldNotDisplayed1(){
 
         List<WebElement> statuses = invoicingModulePage.tableStatus;
@@ -67,7 +69,7 @@ public class ValidateInvoiceTest {
 
     }
 
-    @Test(priority = 3)
+    @Test(groups = {"Smoke"},priority = 7)
     public void validateButtonShouldNotDisplayed2(){
         List<WebElement> statuses = invoicingModulePage.tableStatus;
 
@@ -83,13 +85,13 @@ public class ValidateInvoiceTest {
     }
 
 
-    @Test(priority = 4)
+    @Test(groups = {"Smoke"},priority = 8)
     public void validateWithPositiveAmountOfTotalAndRegisterPayment(){
 
         List<WebElement> totalAmount = invoicingModulePage.tableTotal;
         List<WebElement> statuses = invoicingModulePage.tableStatus;
 
-        SeleniumUtils.pauseWithTreadSleep(10);
+        SeleniumUtils.pauseWithTreadSleep(2);
         for(int i = 0; i < totalAmount.size(); i++){
             String str = totalAmount.get(i).getText();
             String newStr = "";
@@ -105,10 +107,9 @@ public class ValidateInvoiceTest {
             }
         }
 
-        //SeleniumUtils.explicitWaitForVisibility(existingCustomerInvoicePage.validateButton,5);
-        SeleniumUtils.pauseWithTreadSleep(5);
+        SeleniumUtils.explicitWaitForVisibility(existingCustomerInvoicePage.validateButton,2);
         existingCustomerInvoicePage.validateButton.click();
-        SeleniumUtils.pauseWithTreadSleep(5);
+        SeleniumUtils.pauseWithTreadSleep(2);
         existingCustomerInvoicePage.registerPaymentButton.click();
 
         SeleniumUtils.pauseWithTreadSleep(2);
@@ -121,11 +122,11 @@ public class ValidateInvoiceTest {
         Assert.assertTrue(status.contains(Config.getProperties("invoiceStatusAttribute")));
     }
 
-    @Test(priority = 5)
+    @Test(groups = {"Smoke"},priority = 9)
     public void validateInvoiceWithNegativeAmountOfTotal(){
 
         List<WebElement> totalAmount = invoicingModulePage.tableTotal;
-        SeleniumUtils.pauseWithTreadSleep(5);
+        SeleniumUtils.pauseWithTreadSleep(2);
 
         for(WebElement amount: totalAmount){
             String str = amount.getText();
@@ -142,7 +143,7 @@ public class ValidateInvoiceTest {
             }
         }
 
-        SeleniumUtils.pauseWithTreadSleep(5);
+        SeleniumUtils.pauseWithTreadSleep(2);
 
         existingCustomerInvoicePage.validateButton.click();
 
@@ -150,19 +151,16 @@ public class ValidateInvoiceTest {
 
         Assert.assertTrue(warning.contains(Config.getProperties("negativeAmountValidateWarningMsg")));
 
-        SeleniumUtils.pauseWithTreadSleep(5);
-
         existingCustomerInvoicePage.wrongValidateWarningOkButton.click();
 
     }
 
-    @Test(priority = 6)
+    @Test(groups = {"Smoke"},priority = 10)
     public void validateInvoiceWithEmptyProductField(){
 
         List<WebElement> totalAmount = invoicingModulePage.tableTotal;
         List<WebElement> statuses = invoicingModulePage.tableStatus;
-        SeleniumUtils.pauseWithTreadSleep(4);
-
+       // SeleniumUtils.pauseWithTreadSleep(2);
         boolean check = true;
 
         int a = 0;
@@ -189,9 +187,10 @@ public class ValidateInvoiceTest {
                 homePage.invoicingButton.click();
             }catch (NoSuchElementException e){
                 existingCustomerInvoicePage.validateButton.click();
-                SeleniumUtils.pauseWithTreadSleep(3);
+                //SeleniumUtils.pauseWithTreadSleep(3);
                 String warningMsg = existingCustomerInvoicePage.emptyProductFieldValidateWarning.getText();
                 Assert.assertEquals(warningMsg,Config.getProperties("emptyProductFieldValidateWarningMsg"));
+                SeleniumUtils.pauseWithTreadSleep(2);
                 existingCustomerInvoicePage.wrongValidateWarningOkButton.click();
                 break;
             }
@@ -199,12 +198,12 @@ public class ValidateInvoiceTest {
 
     }
 
-    @Test(priority = 7)
+    @Test(groups = {"Smoke"},priority = 11)
     public void sendByEmailInvoice(){
 
         List<WebElement> totalAmount = invoicingModulePage.tableTotal;
         List<WebElement> statuses = invoicingModulePage.tableStatus;
-        SeleniumUtils.pauseWithTreadSleep(4);
+        //SeleniumUtils.pauseWithTreadSleep(4);
         for(int i = 0; i < totalAmount.size(); i++){
             String str = totalAmount.get(i).getText();
             String newStr = "";
@@ -223,6 +222,11 @@ public class ValidateInvoiceTest {
         existingCustomerInvoicePage.validateButton.click();
         SeleniumUtils.explicitWaitForVisibility(existingCustomerInvoicePage.sendByEmailButton,5);
         existingCustomerInvoicePage.sendByEmailButton.click();
+
+        if(sendByEmailPage.closeButton.isDisplayed()){
+            sendByEmailPage.closeButton.click();
+        }
+
         SeleniumUtils.explicitWaitForVisibility(sendByEmailPage.sendButton,5);
         sendByEmailPage.sendButton.click();
 
@@ -231,9 +235,24 @@ public class ValidateInvoiceTest {
 
     }
 
-    @AfterClass
+    @Test(groups = {"Smoke"},priority = 12)
+    public void editButtonIsDisplayed(){
+        List<WebElement> statuses = invoicingModulePage.tableStatus;
+
+        for(WebElement status: statuses){
+            if(status.getText().equals(Config.getProperties("invoiceStatusDraft"))){
+                status.click();
+                break;
+            }
+        }
+        SeleniumUtils.pauseWithTreadSleep(2);
+        Assert.assertTrue(existingCustomerInvoicePage.editButton.isDisplayed());
+    }
+
+    @AfterSuite(alwaysRun = true)
     public void quitBrowser(){
        Driver.quitDriver();
     }
 
 }
+

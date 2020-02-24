@@ -41,4 +41,25 @@ public class ExistingCustomerInvoicePage {
     @FindBy(xpath = "//div[@class='o_dialog_warning modal-body']")
     public WebElement emptyProductFieldValidateWarning;
 
+    @FindBy(xpath = "//td[@class='o_data_cell o_readonly_modifier o_required_modifier'][1]")   //tr[@class='o_data_row text-info']/td[2])[1]
+    public WebElement existingCustomer;
+
+    @FindBy(xpath = "//td[@class='o_data_cell o_readonly_modifier o_required_modifier']")
+    public WebElement existingCustomerPaid;
+
+    @FindBy(xpath = "//button[@class='btn btn-primary btn-sm o_form_button_edit']")
+    public WebElement editButton;
+
+    @FindBy(xpath = "//button[@class='btn btn-default btn-sm o_form_button_cancel']")
+    public WebElement discardButton;
+
+    @FindBy(xpath = "//input[@class='o_input ui-autocomplete-input']")
+    public WebElement salesChannelDropdown;
+
+    @FindBy(xpath = "//button[@data-value='open']")
+    public WebElement invoiceStatusOpen;
+
+    @FindBy(xpath = "(//label[@class='o_form_label o_readonly_modifier o_required_modifier'])")
+    public WebElement verifyNavigationCustomerInvoice;
+
 }
